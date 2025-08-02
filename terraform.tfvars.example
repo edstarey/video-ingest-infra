@@ -1,0 +1,159 @@
+# Video Ingest Infrastructure Configuration
+# Copy this file to terraform.tfvars and update with your values
+
+# Project Configuration
+project_name = "video-ingest"
+environment  = "dev"  # dev, staging, prod
+
+# AWS Configuration
+aws_region = "us-east-1"
+aws_profile = "default"  # Optional: AWS CLI profile to use
+
+# Networking Configuration
+vpc_cidr = "10.0.0.0/16"
+availability_zones = [
+  "us-east-1a",
+  "us-east-1b",
+  "us-east-1c"
+]
+
+# Public subnet CIDRs (for ALB, NAT Gateways)
+public_subnet_cidrs = [
+  "10.0.1.0/24",
+  "10.0.2.0/24",
+  "10.0.3.0/24"
+]
+
+# Private subnet CIDRs (for ECS tasks)
+private_subnet_cidrs = [
+  "10.0.11.0/24",
+  "10.0.12.0/24",
+  "10.0.13.0/24"
+]
+
+# Database subnet CIDRs (for RDS)
+database_subnet_cidrs = [
+  "10.0.21.0/24",
+  "10.0.22.0/24",
+  "10.0.23.0/24"
+]
+
+# S3 Configuration
+s3_bucket_name = "video-ingest-storage-dev-12345"  # Must be globally unique
+enable_s3_versioning = true
+enable_s3_encryption = true
+s3_lifecycle_enabled = true
+
+# S3 Lifecycle Configuration
+s3_lifecycle_rules = {
+  standard_to_ia_days = 30
+  ia_to_glacier_days = 90
+  glacier_to_deep_archive_days = 365
+  expiration_days = 2555  # 7 years
+}
+
+# RDS Configuration
+rds_instance_class = "db.t3.micro"  # db.t3.micro for dev, db.t3.small for staging, db.r6g.large for prod
+rds_allocated_storage = 20
+rds_max_allocated_storage = 100
+rds_engine_version = "15.4"
+rds_database_name = "video_ingest"
+rds_username = "postgres"
+enable_rds_multi_az = false  # true for staging/prod
+rds_backup_retention_period = 7
+rds_backup_window = "03:00-04:00"
+rds_maintenance_window = "sun:04:00-sun:05:00"
+enable_rds_deletion_protection = false  # true for prod
+
+# ECS Configuration
+ecs_cluster_name = "video-ingest-cluster"
+ecs_service_name = "video-ingest-api"
+ecs_task_cpu = 256  # 256 for dev, 512 for staging, 1024 for prod
+ecs_task_memory = 512  # 512 for dev, 1024 for staging, 2048 for prod
+ecs_desired_count = 1  # 1 for dev, 2 for staging, 3+ for prod
+ecs_max_capacity = 3
+ecs_min_capacity = 1
+
+# ECS Auto Scaling Configuration
+ecs_target_cpu_utilization = 70
+ecs_target_memory_utilization = 80
+ecs_scale_up_cooldown = 300
+ecs_scale_down_cooldown = 300
+
+# Application Load Balancer Configuration
+alb_name = "video-ingest-alb"
+alb_internal = false
+enable_alb_deletion_protection = false  # true for prod
+alb_idle_timeout = 60
+enable_http2 = true
+
+# SSL/TLS Configuration
+domain_name = "api.video-ingest.example.com"  # Update with your domain
+certificate_arn = ""  # Leave empty to create new certificate
+enable_ssl_redirect = true
+
+# API Gateway Configuration
+api_gateway_name = "video-ingest-api"
+api_gateway_stage_name = "v1"
+enable_api_gateway_logging = true
+api_gateway_throttle_rate_limit = 1000
+api_gateway_throttle_burst_limit = 2000
+
+# CloudFront Configuration
+cloudfront_distribution_comment = "Video Ingest CDN"
+cloudfront_price_class = "PriceClass_100"  # PriceClass_All for global, PriceClass_100 for US/Europe
+cloudfront_default_ttl = 86400  # 24 hours
+cloudfront_max_ttl = 31536000  # 1 year
+enable_cloudfront_compression = true
+
+# Security Configuration
+enable_vpc_flow_logs = true
+enable_cloudtrail = true
+enable_config = true
+enable_guardduty = false  # Enable for production
+
+# Monitoring Configuration
+enable_detailed_monitoring = true
+cloudwatch_log_retention_days = 14  # 14 for dev, 30 for staging, 90 for prod
+enable_cloudwatch_alarms = true
+
+# Cost Optimization
+enable_spot_instances = false  # true for dev/staging
+enable_scheduled_scaling = false  # true for predictable workloads
+
+# Backup Configuration
+enable_automated_backups = true
+backup_schedule = "cron(0 2 * * ? *)"  # Daily at 2 AM UTC
+
+# Tags (applied to all resources)
+common_tags = {
+  Project     = "video-ingest"
+  Environment = "dev"
+  Owner       = "platform-team"
+  CostCenter  = "engineering"
+  Terraform   = "true"
+}
+
+# Environment-specific overrides
+# Uncomment and modify for staging/prod environments
+
+# # Staging Environment Overrides
+# rds_instance_class = "db.t3.small"
+# ecs_task_cpu = 512
+# ecs_task_memory = 1024
+# ecs_desired_count = 2
+# enable_rds_multi_az = true
+# cloudwatch_log_retention_days = 30
+
+# # Production Environment Overrides
+# rds_instance_class = "db.r6g.large"
+# ecs_task_cpu = 1024
+# ecs_task_memory = 2048
+# ecs_desired_count = 3
+# ecs_max_capacity = 10
+# enable_rds_multi_az = true
+# enable_rds_deletion_protection = true
+# enable_alb_deletion_protection = true
+# enable_guardduty = true
+# cloudwatch_log_retention_days = 90
+# cloudfront_price_class = "PriceClass_All"
