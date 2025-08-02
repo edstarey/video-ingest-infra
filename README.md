@@ -54,22 +54,47 @@ video-ingest-infra/
 
 ## Quick Start
 
+### 🌟 Option 1: Terraform Cloud (Recommended)
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/edstarey/video-ingest-infra.git
+cd video-ingest-infra
+
+# 2. Set up Terraform Cloud integration
+./scripts/setup-terraform-cloud.sh
+
+# 3. Follow the detailed setup guide
+# See: docs/terraform-cloud-setup.md
+
+# 4. Deploy via GitHub
+# Push changes to main branch for automatic deployment
+```
+
+### 🔧 Option 2: Local Deployment
+
 1. **Clone and Setup**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/edstarey/video-ingest-infra.git
    cd video-ingest-infra
-   cp terraform.tfvars.example terraform.tfvars
-   # Edit terraform.tfvars with your values
+   cp terraform.tfvars.example environments/dev/terraform.tfvars
+   # Edit terraform.tfvars with your AWS account details
    ```
 
-2. **Initialize Infrastructure**
+2. **Deploy Backend Infrastructure**
+   ```bash
+   cd shared
+   terraform init && terraform apply
+   ```
+
+3. **Deploy Development Environment**
    ```bash
    make init ENV=dev
    make plan ENV=dev
    make apply ENV=dev
    ```
 
-3. **Verify Deployment**
+4. **Verify Deployment**
    ```bash
    make validate ENV=dev
    make test ENV=dev

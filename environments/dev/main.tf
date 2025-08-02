@@ -9,14 +9,13 @@ terraform {
     }
   }
 
-  # Backend configuration - update after running shared/main.tf
-  backend "s3" {
-    # These values will be provided via backend config file or CLI
-    # bucket         = "video-ingest-terraform-state-us-east-1-xxxxxxxx"
-    # key            = "environments/dev/terraform.tfstate"
-    # region         = "us-east-1"
-    # dynamodb_table = "video-ingest-terraform-locks"
-    # encrypt        = true
+  # Terraform Cloud backend configuration
+  cloud {
+    organization = "edstarey-video-ingest"
+
+    workspaces {
+      name = "video-ingest-dev"
+    }
   }
 }
 
