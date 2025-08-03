@@ -34,7 +34,7 @@ output "backend_config" {
   description = "Backend configuration for use in environment configurations"
   value = {
     bucket         = aws_s3_bucket.terraform_state.bucket
-    key            = "terraform.tfstate"  # This will be overridden per environment
+    key            = "terraform.tfstate" # This will be overridden per environment
     region         = var.aws_region
     dynamodb_table = aws_dynamodb_table.terraform_locks.name
     encrypt        = true

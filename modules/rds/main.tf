@@ -45,7 +45,7 @@ resource "aws_db_parameter_group" "main" {
 
   parameter {
     name  = "log_min_duration_statement"
-    value = "1000"  # Log queries taking longer than 1 second
+    value = "1000" # Log queries taking longer than 1 second
   }
 
   parameter {
@@ -95,7 +95,7 @@ resource "aws_db_instance" "main" {
   max_allocated_storage = var.max_allocated_storage
   storage_type          = var.storage_type
   storage_encrypted     = var.storage_encrypted
-  kms_key_id           = var.kms_key_id
+  kms_key_id            = var.kms_key_id
 
   # Database configuration
   db_name  = var.db_name
@@ -109,37 +109,37 @@ resource "aws_db_instance" "main" {
   publicly_accessible    = false
 
   # High availability
-  multi_az               = var.multi_az
-  availability_zone      = var.multi_az ? null : var.availability_zone
+  multi_az          = var.multi_az
+  availability_zone = var.multi_az ? null : var.availability_zone
 
   # Backup configuration
-  backup_retention_period = var.backup_retention_period
-  backup_window          = var.backup_window
-  copy_tags_to_snapshot  = true
+  backup_retention_period  = var.backup_retention_period
+  backup_window            = var.backup_window
+  copy_tags_to_snapshot    = true
   delete_automated_backups = var.environment != "prod"
 
   # Maintenance
-  maintenance_window         = var.maintenance_window
-  auto_minor_version_upgrade = var.auto_minor_version_upgrade
+  maintenance_window          = var.maintenance_window
+  auto_minor_version_upgrade  = var.auto_minor_version_upgrade
   allow_major_version_upgrade = false
 
   # Monitoring
-  monitoring_interval = var.monitoring_interval
-  monitoring_role_arn = var.monitoring_interval > 0 ? aws_iam_role.rds_enhanced_monitoring[0].arn : null
+  monitoring_interval             = var.monitoring_interval
+  monitoring_role_arn             = var.monitoring_interval > 0 ? aws_iam_role.rds_enhanced_monitoring[0].arn : null
   enabled_cloudwatch_logs_exports = var.enabled_cloudwatch_logs_exports
 
   # Performance Insights
   performance_insights_enabled          = var.performance_insights_enabled
   performance_insights_retention_period = var.performance_insights_enabled ? var.performance_insights_retention_period : null
-  performance_insights_kms_key_id      = var.performance_insights_enabled && var.kms_key_id != null ? var.kms_key_id : null
+  performance_insights_kms_key_id       = var.performance_insights_enabled && var.kms_key_id != null ? var.kms_key_id : null
 
   # Parameter and option groups
   parameter_group_name = aws_db_parameter_group.main.name
   option_group_name    = aws_db_option_group.main.name
 
   # Deletion protection
-  deletion_protection = var.deletion_protection
-  skip_final_snapshot = var.environment != "prod"
+  deletion_protection       = var.deletion_protection
+  skip_final_snapshot       = var.environment != "prod"
   final_snapshot_identifier = var.environment == "prod" ? "${var.project_name}-${var.environment}-final-snapshot-${formatdate("YYYY-MM-DD-hhmm", timestamp())}" : null
 
   tags = merge(var.common_tags, {
@@ -241,7 +241,7 @@ resource "aws_cloudwatch_metric_alarm" "database_connections" {
   namespace           = "AWS/RDS"
   period              = "300"
   statistic           = "Average"
-  threshold           = var.max_connections * 0.8  # 80% of max connections
+  threshold           = var.max_connections * 0.8 # 80% of max connections
   alarm_description   = "This metric monitors RDS connection count"
   alarm_actions       = var.alarm_actions
 
@@ -262,7 +262,7 @@ resource "aws_cloudwatch_metric_alarm" "database_free_storage" {
   namespace           = "AWS/RDS"
   period              = "300"
   statistic           = "Average"
-  threshold           = 2000000000  # 2GB in bytes
+  threshold           = 2000000000 # 2GB in bytes
   alarm_description   = "This metric monitors RDS free storage space"
   alarm_actions       = var.alarm_actions
 

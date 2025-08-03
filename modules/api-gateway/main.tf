@@ -46,8 +46,8 @@ resource "aws_api_gateway_integration" "alb" {
   http_method = aws_api_gateway_method.proxy.http_method
 
   integration_http_method = "ANY"
-  type                   = "HTTP_PROXY"
-  uri                    = "http://${var.alb_dns_name}/{proxy}"
+  type                    = "HTTP_PROXY"
+  uri                     = "http://${var.alb_dns_name}/{proxy}"
 
   request_parameters = {
     "integration.request.path.proxy" = "method.request.path.proxy"
@@ -73,8 +73,8 @@ resource "aws_api_gateway_integration" "root" {
   http_method = aws_api_gateway_method.root.http_method
 
   integration_http_method = "ANY"
-  type                   = "HTTP_PROXY"
-  uri                    = "http://${var.alb_dns_name}/"
+  type                    = "HTTP_PROXY"
+  uri                     = "http://${var.alb_dns_name}/"
 
   timeout_milliseconds = var.integration_timeout
 }
@@ -170,8 +170,8 @@ resource "aws_api_gateway_method_settings" "main" {
 resource "aws_api_gateway_usage_plan" "main" {
   count = var.create_usage_plan ? 1 : 0
 
-  name         = "${var.project_name}-${var.environment}-usage-plan"
-  description  = "Usage plan for ${var.project_name} ${var.environment}"
+  name        = "${var.project_name}-${var.environment}-usage-plan"
+  description = "Usage plan for ${var.project_name} ${var.environment}"
 
   api_stages {
     api_id = aws_api_gateway_rest_api.main.id
@@ -217,7 +217,7 @@ resource "aws_api_gateway_domain_name" "main" {
 
   domain_name              = var.domain_name
   regional_certificate_arn = var.certificate_arn
-  security_policy         = var.security_policy
+  security_policy          = var.security_policy
 
   endpoint_configuration {
     types = ["REGIONAL"]
@@ -267,8 +267,8 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_4xx_errors" {
   alarm_actions       = var.alarm_actions
 
   dimensions = {
-    ApiName   = aws_api_gateway_rest_api.main.name
-    Stage     = aws_api_gateway_stage.main.stage_name
+    ApiName = aws_api_gateway_rest_api.main.name
+    Stage   = aws_api_gateway_stage.main.stage_name
   }
 
   tags = var.common_tags
@@ -289,8 +289,8 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_5xx_errors" {
   alarm_actions       = var.alarm_actions
 
   dimensions = {
-    ApiName   = aws_api_gateway_rest_api.main.name
-    Stage     = aws_api_gateway_stage.main.stage_name
+    ApiName = aws_api_gateway_rest_api.main.name
+    Stage   = aws_api_gateway_stage.main.stage_name
   }
 
   tags = var.common_tags
@@ -311,8 +311,8 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_latency" {
   alarm_actions       = var.alarm_actions
 
   dimensions = {
-    ApiName   = aws_api_gateway_rest_api.main.name
-    Stage     = aws_api_gateway_stage.main.stage_name
+    ApiName = aws_api_gateway_rest_api.main.name
+    Stage   = aws_api_gateway_stage.main.stage_name
   }
 
   tags = var.common_tags

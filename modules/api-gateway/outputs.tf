@@ -105,9 +105,9 @@ output "cloudwatch_log_group_arn" {
 output "api_gateway_info" {
   description = "API Gateway information"
   value = {
-    api_id       = aws_api_gateway_rest_api.main.id
-    stage_name   = aws_api_gateway_stage.main.stage_name
-    invoke_url   = aws_api_gateway_stage.main.invoke_url
-    domain_name  = var.domain_name != null && var.certificate_arn != null ? aws_api_gateway_domain_name.main[0].domain_name : null
+    api_id      = aws_api_gateway_rest_api.main.id
+    stage_name  = aws_api_gateway_stage.main.stage_name
+    invoke_url  = aws_api_gateway_stage.main.invoke_url
+    domain_name = var.domain_name != null && var.certificate_arn != null ? aws_api_gateway_domain_name.main[0].domain_name : null
   }
 }

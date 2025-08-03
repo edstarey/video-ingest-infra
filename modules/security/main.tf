@@ -203,7 +203,7 @@ resource "aws_iam_role_policy" "ecs_task_logs" {
 resource "aws_secretsmanager_secret" "app_config" {
   name                    = "${var.project_name}-${var.environment}-app-config"
   description             = "Application configuration for ${var.project_name} ${var.environment}"
-  kms_key_id             = aws_kms_key.main.arn
+  kms_key_id              = aws_kms_key.main.arn
   recovery_window_in_days = var.environment == "prod" ? 30 : 0
 
   tags = var.common_tags

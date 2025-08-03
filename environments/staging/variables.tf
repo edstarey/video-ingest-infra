@@ -31,7 +31,7 @@ variable "aws_profile" {
 variable "vpc_cidr" {
   description = "CIDR block for VPC"
   type        = string
-  default     = "10.1.0.0/16"  # Different CIDR for staging
+  default     = "10.1.0.0/16" # Different CIDR for staging
 }
 
 variable "availability_zones" {
@@ -86,15 +86,15 @@ variable "s3_lifecycle_rules" {
   description = "S3 lifecycle rules configuration"
   type = object({
     standard_to_ia_days          = number
-    ia_to_glacier_days          = number
+    ia_to_glacier_days           = number
     glacier_to_deep_archive_days = number
-    expiration_days             = number
+    expiration_days              = number
   })
   default = {
     standard_to_ia_days          = 30
-    ia_to_glacier_days          = 90
+    ia_to_glacier_days           = 90
     glacier_to_deep_archive_days = 365
-    expiration_days             = 2555
+    expiration_days              = 2555
   }
 }
 
@@ -102,13 +102,13 @@ variable "s3_lifecycle_rules" {
 variable "rds_instance_class" {
   description = "RDS instance class"
   type        = string
-  default     = "db.t3.small"  # Larger than dev
+  default     = "db.t3.small" # Larger than dev
 }
 
 variable "rds_allocated_storage" {
   description = "RDS allocated storage in GB"
   type        = number
-  default     = 50  # More storage for staging
+  default     = 50 # More storage for staging
 }
 
 variable "rds_max_allocated_storage" {
@@ -138,13 +138,13 @@ variable "rds_username" {
 variable "enable_rds_multi_az" {
   description = "Enable RDS Multi-AZ deployment"
   type        = bool
-  default     = true  # Multi-AZ for staging
+  default     = true # Multi-AZ for staging
 }
 
 variable "rds_backup_retention_period" {
   description = "RDS backup retention period in days"
   type        = number
-  default     = 14  # Longer retention for staging
+  default     = 14 # Longer retention for staging
 }
 
 variable "rds_backup_window" {
@@ -162,7 +162,7 @@ variable "rds_maintenance_window" {
 variable "enable_rds_deletion_protection" {
   description = "Enable RDS deletion protection"
   type        = bool
-  default     = true  # Protection enabled for staging
+  default     = true # Protection enabled for staging
 }
 
 # ECS Configuration (staging-optimized)
@@ -181,19 +181,19 @@ variable "ecs_service_name" {
 variable "ecs_task_cpu" {
   description = "CPU units for ECS task"
   type        = number
-  default     = 512  # More CPU for staging
+  default     = 512 # More CPU for staging
 }
 
 variable "ecs_task_memory" {
   description = "Memory for ECS task in MB"
   type        = number
-  default     = 1024  # More memory for staging
+  default     = 1024 # More memory for staging
 }
 
 variable "ecs_desired_count" {
   description = "Desired number of ECS tasks"
   type        = number
-  default     = 2  # Multiple tasks for staging
+  default     = 2 # Multiple tasks for staging
 }
 
 variable "ecs_max_capacity" {
@@ -248,7 +248,7 @@ variable "alb_internal" {
 variable "enable_alb_deletion_protection" {
   description = "Enable ALB deletion protection"
   type        = bool
-  default     = true  # Protection enabled for staging
+  default     = true # Protection enabled for staging
 }
 
 variable "alb_idle_timeout" {
@@ -298,7 +298,7 @@ variable "enable_detailed_monitoring" {
 variable "cloudwatch_log_retention_days" {
   description = "CloudWatch log retention period in days"
   type        = number
-  default     = 30  # Longer retention for staging
+  default     = 30 # Longer retention for staging
 }
 
 variable "enable_cloudwatch_alarms" {

@@ -188,18 +188,18 @@ resource "aws_cloudfront_distribution" "main" {
   # SSL Certificate
   viewer_certificate {
     cloudfront_default_certificate = var.ssl_certificate_arn == null
-    acm_certificate_arn           = var.ssl_certificate_arn
-    ssl_support_method            = var.ssl_certificate_arn != null ? "sni-only" : null
-    minimum_protocol_version      = var.ssl_certificate_arn != null ? var.minimum_protocol_version : null
+    acm_certificate_arn            = var.ssl_certificate_arn
+    ssl_support_method             = var.ssl_certificate_arn != null ? "sni-only" : null
+    minimum_protocol_version       = var.ssl_certificate_arn != null ? var.minimum_protocol_version : null
   }
 
   # Custom error responses
   dynamic "custom_error_response" {
     for_each = var.custom_error_responses
     content {
-      error_code         = custom_error_response.value.error_code
-      response_code      = custom_error_response.value.response_code
-      response_page_path = custom_error_response.value.response_page_path
+      error_code            = custom_error_response.value.error_code
+      response_code         = custom_error_response.value.response_code
+      response_page_path    = custom_error_response.value.response_page_path
       error_caching_min_ttl = custom_error_response.value.error_caching_min_ttl
     }
   }

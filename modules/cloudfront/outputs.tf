@@ -59,9 +59,9 @@ output "route53_record_fqdns" {
 output "cloudfront_info" {
   description = "CloudFront distribution information"
   value = {
-    distribution_id   = aws_cloudfront_distribution.main.id
-    domain_name      = aws_cloudfront_distribution.main.domain_name
-    hosted_zone_id   = aws_cloudfront_distribution.main.hosted_zone_id
-    aliases          = var.aliases
+    distribution_id = aws_cloudfront_distribution.main.id
+    domain_name     = aws_cloudfront_distribution.main.domain_name
+    hosted_zone_id  = aws_cloudfront_distribution.main.hosted_zone_id
+    aliases         = var.aliases
   }
 }

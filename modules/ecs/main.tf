@@ -147,13 +147,13 @@ resource "aws_ecs_task_definition" "app" {
   cpu                      = var.task_cpu
   memory                   = var.task_memory
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
-  task_role_arn           = aws_iam_role.ecs_task_role.arn
+  task_role_arn            = aws_iam_role.ecs_task_role.arn
 
   container_definitions = jsonencode([
     {
       name  = "app"
       image = var.container_image
-      
+
       portMappings = [
         {
           containerPort = var.container_port
@@ -186,7 +186,7 @@ resource "aws_ecs_task_definition" "app" {
 
       # Resource limits
       memoryReservation = var.task_memory_reservation
-      
+
       # Linux parameters
       linuxParameters = {
         initProcessEnabled = true
@@ -201,11 +201,11 @@ resource "aws_ecs_task_definition" "app" {
 
 # ECS Service
 resource "aws_ecs_service" "app" {
-  name            = var.service_name
-  cluster         = aws_ecs_cluster.main.id
-  task_definition = aws_ecs_task_definition.app.arn
-  desired_count   = var.desired_count
-  launch_type     = "FARGATE"
+  name             = var.service_name
+  cluster          = aws_ecs_cluster.main.id
+  task_definition  = aws_ecs_task_definition.app.arn
+  desired_count    = var.desired_count
+  launch_type      = "FARGATE"
   platform_version = var.platform_version
 
   # Deployment configuration

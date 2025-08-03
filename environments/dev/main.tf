@@ -38,27 +38,27 @@ locals {
   region     = data.aws_region.current.name
 
   # Environment-specific configurations
-  enable_multi_az = false  # Single AZ for dev to save costs
+  enable_multi_az    = false # Single AZ for dev to save costs
   enable_nat_gateway = true
-  single_nat_gateway = true  # Use single NAT gateway for cost optimization
+  single_nat_gateway = true # Use single NAT gateway for cost optimization
 }
 
 # VPC Module
 module "vpc" {
   source = "../../modules/vpc"
 
-  project_name               = var.project_name
-  environment               = var.environment
-  vpc_cidr                  = var.vpc_cidr
-  availability_zones        = var.availability_zones
-  public_subnet_cidrs       = var.public_subnet_cidrs
-  private_subnet_cidrs      = var.private_subnet_cidrs
-  database_subnet_cidrs     = var.database_subnet_cidrs
-  enable_nat_gateway        = local.enable_nat_gateway
-  single_nat_gateway        = local.single_nat_gateway
-  enable_vpc_flow_logs      = var.enable_vpc_flow_logs
-  flow_log_retention_days   = var.cloudwatch_log_retention_days
-  common_tags               = var.common_tags
+  project_name            = var.project_name
+  environment             = var.environment
+  vpc_cidr                = var.vpc_cidr
+  availability_zones      = var.availability_zones
+  public_subnet_cidrs     = var.public_subnet_cidrs
+  private_subnet_cidrs    = var.private_subnet_cidrs
+  database_subnet_cidrs   = var.database_subnet_cidrs
+  enable_nat_gateway      = local.enable_nat_gateway
+  single_nat_gateway      = local.single_nat_gateway
+  enable_vpc_flow_logs    = var.enable_vpc_flow_logs
+  flow_log_retention_days = var.cloudwatch_log_retention_days
+  common_tags             = var.common_tags
 }
 
 # S3 Module
@@ -66,17 +66,17 @@ module "s3" {
   source = "../../modules/s3"
 
   project_name              = var.project_name
-  environment              = var.environment
-  bucket_name              = var.s3_bucket_name
-  enable_versioning        = var.enable_s3_versioning
-  enable_encryption        = var.enable_s3_encryption
-  enable_lifecycle         = var.s3_lifecycle_enabled
-  lifecycle_rules          = var.s3_lifecycle_rules
-  enable_notifications     = false  # Disabled for dev
-  enable_cors              = true
-  cors_allowed_origins     = ["http://localhost:3000", "https://*.${var.domain_name}"]
+  environment               = var.environment
+  bucket_name               = var.s3_bucket_name
+  enable_versioning         = var.enable_s3_versioning
+  enable_encryption         = var.enable_s3_encryption
+  enable_lifecycle          = var.s3_lifecycle_enabled
+  lifecycle_rules           = var.s3_lifecycle_rules
+  enable_notifications      = false # Disabled for dev
+  enable_cors               = true
+  cors_allowed_origins      = ["http://localhost:3000", "https://*.${var.domain_name}"]
   enable_cloudwatch_metrics = var.enable_detailed_monitoring
-  common_tags              = var.common_tags
+  common_tags               = var.common_tags
 }
 
 # Security Groups
@@ -177,33 +177,33 @@ resource "aws_cloudwatch_log_group" "ecs" {
 module "rds" {
   source = "../../modules/rds"
 
-  project_name               = var.project_name
-  environment               = var.environment
-  db_name                   = var.rds_database_name
-  db_username               = var.rds_username
-  engine_version            = var.rds_engine_version
-  instance_class            = var.rds_instance_class
-  allocated_storage         = var.rds_allocated_storage
-  max_allocated_storage     = var.rds_max_allocated_storage
-  storage_encrypted         = var.enable_s3_encryption
-  db_subnet_group_name      = module.vpc.database_subnet_group_name
-  security_group_ids        = [aws_security_group.rds.id]
-  multi_az                  = var.enable_rds_multi_az
-  backup_retention_period   = var.rds_backup_retention_period
-  backup_window             = var.rds_backup_window
-  maintenance_window        = var.rds_maintenance_window
-  deletion_protection       = var.enable_rds_deletion_protection
-  monitoring_interval       = var.enable_detailed_monitoring ? 60 : 0
+  project_name                 = var.project_name
+  environment                  = var.environment
+  db_name                      = var.rds_database_name
+  db_username                  = var.rds_username
+  engine_version               = var.rds_engine_version
+  instance_class               = var.rds_instance_class
+  allocated_storage            = var.rds_allocated_storage
+  max_allocated_storage        = var.rds_max_allocated_storage
+  storage_encrypted            = var.enable_s3_encryption
+  db_subnet_group_name         = module.vpc.database_subnet_group_name
+  security_group_ids           = [aws_security_group.rds.id]
+  multi_az                     = var.enable_rds_multi_az
+  backup_retention_period      = var.rds_backup_retention_period
+  backup_window                = var.rds_backup_window
+  maintenance_window           = var.rds_maintenance_window
+  deletion_protection          = var.enable_rds_deletion_protection
+  monitoring_interval          = var.enable_detailed_monitoring ? 60 : 0
   performance_insights_enabled = var.enable_detailed_monitoring
-  create_cloudwatch_alarms  = var.enable_cloudwatch_alarms
-  common_tags               = var.common_tags
+  create_cloudwatch_alarms     = var.enable_cloudwatch_alarms
+  common_tags                  = var.common_tags
 }
 
 # ECS Module
 module "ecs" {
   source = "../../modules/ecs"
 
-  project_name                    = var.project_name
+  project_name                   = var.project_name
   environment                    = var.environment
   aws_region                     = var.aws_region
   aws_account_id                 = local.account_id
@@ -212,7 +212,7 @@ module "ecs" {
   task_cpu                       = var.ecs_task_cpu
   task_memory                    = var.ecs_task_memory
   desired_count                  = var.ecs_desired_count
-  container_image                = "nginx:latest"  # Placeholder - will be updated with actual app image
+  container_image                = "nginx:latest" # Placeholder - will be updated with actual app image
   container_port                 = 8080
   private_subnet_ids             = module.vpc.private_subnet_ids
   security_group_ids             = [aws_security_group.ecs.id]
@@ -258,15 +258,15 @@ module "ecs" {
 module "security" {
   source = "../../modules/security"
 
-  project_name      = var.project_name
-  environment      = var.environment
-  aws_region       = var.aws_region
-  aws_account_id   = local.account_id
-  s3_bucket_arn    = module.s3.bucket_arn
-  s3_bucket_name   = module.s3.bucket_id
-  vpc_id           = module.vpc.vpc_id
-  create_lambda_role = false  # Set to true if Lambda functions are needed
-  common_tags      = var.common_tags
+  project_name       = var.project_name
+  environment        = var.environment
+  aws_region         = var.aws_region
+  aws_account_id     = local.account_id
+  s3_bucket_arn      = module.s3.bucket_arn
+  s3_bucket_name     = module.s3.bucket_id
+  vpc_id             = module.vpc.vpc_id
+  create_lambda_role = false # Set to true if Lambda functions are needed
+  common_tags        = var.common_tags
 }
 
 # ALB Module
@@ -274,22 +274,22 @@ module "alb" {
   source = "../../modules/alb"
 
   project_name               = var.project_name
-  environment               = var.environment
-  alb_name                  = var.alb_name
-  internal                  = var.alb_internal
-  security_group_ids        = [aws_security_group.alb.id]
-  subnet_ids                = module.vpc.public_subnet_ids
-  vpc_id                    = module.vpc.vpc_id
+  environment                = var.environment
+  alb_name                   = var.alb_name
+  internal                   = var.alb_internal
+  security_group_ids         = [aws_security_group.alb.id]
+  subnet_ids                 = module.vpc.public_subnet_ids
+  vpc_id                     = module.vpc.vpc_id
   enable_deletion_protection = var.enable_alb_deletion_protection
-  idle_timeout              = var.alb_idle_timeout
-  enable_http2              = var.enable_http2
-  target_port               = 8080
-  health_check_path         = "/health"
-  ssl_certificate_arn       = var.certificate_arn != "" ? var.certificate_arn : null
-  enable_ssl_redirect       = var.enable_ssl_redirect
-  domain_name               = var.domain_name
-  create_cloudwatch_alarms  = var.enable_cloudwatch_alarms
-  common_tags               = var.common_tags
+  idle_timeout               = var.alb_idle_timeout
+  enable_http2               = var.enable_http2
+  target_port                = 8080
+  health_check_path          = "/health"
+  ssl_certificate_arn        = var.certificate_arn != "" ? var.certificate_arn : null
+  enable_ssl_redirect        = var.enable_ssl_redirect
+  domain_name                = var.domain_name
+  create_cloudwatch_alarms   = var.enable_cloudwatch_alarms
+  common_tags                = var.common_tags
 }
 
 
@@ -298,7 +298,7 @@ module "alb" {
 module "api_gateway" {
   source = "../../modules/api-gateway"
 
-  project_name              = var.project_name
+  project_name             = var.project_name
   environment              = var.environment
   api_name                 = "${var.project_name}-${var.environment}-api"
   stage_name               = "v1"
@@ -320,7 +320,7 @@ module "api_gateway" {
 module "cloudfront" {
   source = "../../modules/cloudfront"
 
-  project_name              = var.project_name
+  project_name             = var.project_name
   environment              = var.environment
   s3_bucket_id             = module.s3.bucket_id
   s3_bucket_arn            = module.s3.bucket_arn
@@ -329,7 +329,7 @@ module "cloudfront" {
   distribution_comment     = "CDN for ${var.project_name} ${var.environment}"
   aliases                  = var.domain_name != "" ? [var.domain_name] : []
   ssl_certificate_arn      = var.certificate_arn != "" ? var.certificate_arn : null
-  price_class              = "PriceClass_100"  # US and Europe only for dev
+  price_class              = "PriceClass_100" # US and Europe only for dev
   enable_compression       = true
   default_ttl              = 86400
   video_default_ttl        = 86400
@@ -341,22 +341,22 @@ module "cloudfront" {
 module "monitoring" {
   source = "../../modules/monitoring"
 
-  project_name                = var.project_name
-  environment                = var.environment
-  aws_region                 = var.aws_region
-  aws_account_id             = local.account_id
-  alert_email_addresses      = []  # Add email addresses for alerts
-  log_retention_days         = var.cloudwatch_log_retention_days
-  ecs_cluster_name           = module.ecs.cluster_name
-  ecs_service_name           = module.ecs.service_name
-  alb_arn_suffix             = module.alb.alb_arn_suffix
-  rds_instance_id            = module.rds.db_instance_id
-  s3_bucket_name             = module.s3.bucket_id
-  cloudfront_distribution_id = module.cloudfront.distribution_id
-  error_rate_threshold       = 10
+  project_name                 = var.project_name
+  environment                  = var.environment
+  aws_region                   = var.aws_region
+  aws_account_id               = local.account_id
+  alert_email_addresses        = [] # Add email addresses for alerts
+  log_retention_days           = var.cloudwatch_log_retention_days
+  ecs_cluster_name             = module.ecs.cluster_name
+  ecs_service_name             = module.ecs.service_name
+  alb_arn_suffix               = module.alb.alb_arn_suffix
+  rds_instance_id              = module.rds.db_instance_id
+  s3_bucket_name               = module.s3.bucket_id
+  cloudfront_distribution_id   = module.cloudfront.distribution_id
+  error_rate_threshold         = 10
   enable_disk_space_monitoring = false
-  enable_anomaly_detection   = false
-  common_tags                = var.common_tags
+  enable_anomaly_detection     = false
+  common_tags                  = var.common_tags
 }
 
 # Placeholder outputs for modules that will be added later
@@ -419,7 +419,7 @@ output "security_group_ids" {
 output "infrastructure_info" {
   description = "Complete infrastructure information"
   value = {
-    vpc_id                    = module.vpc.vpc_id
+    vpc_id                   = module.vpc.vpc_id
     s3_bucket_name           = module.s3.bucket_id
     rds_endpoint             = module.rds.db_instance_endpoint
     ecs_cluster_name         = module.ecs.cluster_name

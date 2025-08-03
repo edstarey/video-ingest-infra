@@ -79,11 +79,11 @@ output "ssm_parameter_arns" {
 output "security_info" {
   description = "Security configuration information"
   value = {
-    kms_key_id              = aws_kms_key.main.key_id
-    kms_key_arn             = aws_kms_key.main.arn
-    ecs_execution_role_arn  = aws_iam_role.ecs_execution_role.arn
-    ecs_task_role_arn       = aws_iam_role.ecs_task_role.arn
-    app_config_secret_arn   = aws_secretsmanager_secret.app_config.arn
+    kms_key_id             = aws_kms_key.main.key_id
+    kms_key_arn            = aws_kms_key.main.arn
+    ecs_execution_role_arn = aws_iam_role.ecs_execution_role.arn
+    ecs_task_role_arn      = aws_iam_role.ecs_task_role.arn
+    app_config_secret_arn  = aws_secretsmanager_secret.app_config.arn
   }
   sensitive = true
 }

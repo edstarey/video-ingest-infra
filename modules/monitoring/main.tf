@@ -143,7 +143,7 @@ resource "aws_cloudwatch_dashboard" "main" {
           ]
           view    = "timeSeries"
           stacked = false
-          region  = "us-east-1"  # CloudFront metrics are always in us-east-1
+          region  = "us-east-1" # CloudFront metrics are always in us-east-1
           title   = "CloudFront Metrics"
           period  = 300
         }

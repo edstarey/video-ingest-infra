@@ -48,15 +48,15 @@ variable "lifecycle_rules" {
   description = "S3 lifecycle rules configuration"
   type = object({
     standard_to_ia_days          = number
-    ia_to_glacier_days          = number
+    ia_to_glacier_days           = number
     glacier_to_deep_archive_days = number
-    expiration_days             = number
+    expiration_days              = number
   })
   default = {
     standard_to_ia_days          = 30
-    ia_to_glacier_days          = 90
+    ia_to_glacier_days           = 90
     glacier_to_deep_archive_days = 365
-    expiration_days             = 2555  # 7 years
+    expiration_days              = 2555 # 7 years
   }
 
   validation {
@@ -78,11 +78,11 @@ variable "enable_notifications" {
 variable "lambda_notifications" {
   description = "Lambda function notifications configuration"
   type = list(object({
-    function_arn   = string
-    function_name  = string
-    events         = list(string)
-    filter_prefix  = string
-    filter_suffix  = string
+    function_arn  = string
+    function_name = string
+    events        = list(string)
+    filter_prefix = string
+    filter_suffix = string
   }))
   default = []
 }

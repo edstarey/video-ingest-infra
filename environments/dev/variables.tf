@@ -85,15 +85,15 @@ variable "s3_lifecycle_rules" {
   description = "S3 lifecycle rules configuration"
   type = object({
     standard_to_ia_days          = number
-    ia_to_glacier_days          = number
+    ia_to_glacier_days           = number
     glacier_to_deep_archive_days = number
-    expiration_days             = number
+    expiration_days              = number
   })
   default = {
     standard_to_ia_days          = 30
-    ia_to_glacier_days          = 90
+    ia_to_glacier_days           = 90
     glacier_to_deep_archive_days = 365
-    expiration_days             = 2555
+    expiration_days              = 2555
   }
 }
 

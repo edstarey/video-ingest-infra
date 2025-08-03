@@ -74,10 +74,10 @@ output "performance_analysis_query_name" {
 output "monitoring_info" {
   description = "Monitoring configuration information"
   value = {
-    sns_topic_arn           = aws_sns_topic.alerts.arn
-    dashboard_name          = aws_cloudwatch_dashboard.main.dashboard_name
-    application_log_group   = aws_cloudwatch_log_group.application.name
-    error_rate_alarm        = aws_cloudwatch_metric_alarm.high_error_rate.alarm_name
-    system_health_alarm     = aws_cloudwatch_composite_alarm.system_health.alarm_name
+    sns_topic_arn         = aws_sns_topic.alerts.arn
+    dashboard_name        = aws_cloudwatch_dashboard.main.dashboard_name
+    application_log_group = aws_cloudwatch_log_group.application.name
+    error_rate_alarm      = aws_cloudwatch_metric_alarm.high_error_rate.alarm_name
+    system_health_alarm   = aws_cloudwatch_composite_alarm.system_health.alarm_name
   }
 }

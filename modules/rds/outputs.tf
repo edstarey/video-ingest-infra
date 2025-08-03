@@ -120,10 +120,10 @@ output "enhanced_monitoring_iam_role_arn" {
 output "connection_info" {
   description = "Database connection information"
   value = {
-    host     = aws_db_instance.main.address
-    port     = aws_db_instance.main.port
-    database = aws_db_instance.main.db_name
-    username = aws_db_instance.main.username
+    host       = aws_db_instance.main.address
+    port       = aws_db_instance.main.port
+    database   = aws_db_instance.main.db_name
+    username   = aws_db_instance.main.username
     secret_arn = aws_secretsmanager_secret.db_password.arn
   }
   sensitive = true
