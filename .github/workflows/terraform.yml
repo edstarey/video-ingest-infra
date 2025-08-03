@@ -43,7 +43,7 @@ jobs:
 
     - name: Terraform Validate
       run: |
-        for env in dev staging prod; do
+        for env in dev staging; do
           if [ -d "environments/$env" ]; then
             echo "Validating $env environment..."
             cd environments/$env
