@@ -52,6 +52,10 @@ resource "aws_s3_bucket_lifecycle_configuration" "video_storage" {
     id     = "video_lifecycle"
     status = "Enabled"
 
+    filter {
+      prefix = "videos/"
+    }
+
     # Transition to Standard-IA
     transition {
       days          = var.lifecycle_rules.standard_to_ia_days
@@ -93,6 +97,10 @@ resource "aws_s3_bucket_lifecycle_configuration" "video_storage" {
   rule {
     id     = "cleanup_multipart"
     status = "Enabled"
+
+    filter {
+      prefix = ""
+    }
 
     abort_incomplete_multipart_upload {
       days_after_initiation = 1

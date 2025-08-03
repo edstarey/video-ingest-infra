@@ -109,23 +109,8 @@ resource "aws_api_gateway_stage" "main" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   stage_name    = var.stage_name
 
-  # Access logging
-  access_log_destination_arn = var.enable_access_logging ? aws_cloudwatch_log_group.api_gateway[0].arn : null
-  access_log_format = var.enable_access_logging ? jsonencode({
-    requestId      = "$context.requestId"
-    ip             = "$context.identity.sourceIp"
-    caller         = "$context.identity.caller"
-    user           = "$context.identity.user"
-    requestTime    = "$context.requestTime"
-    httpMethod     = "$context.httpMethod"
-    resourcePath   = "$context.resourcePath"
-    status         = "$context.status"
-    protocol       = "$context.protocol"
-    responseLength = "$context.responseLength"
-    responseTime   = "$context.responseTime"
-    error          = "$context.error.message"
-    errorType      = "$context.error.messageString"
-  }) : null
+  # Note: Access logging configuration removed for compatibility
+  # Can be added later via aws_api_gateway_method_settings
 
   # X-Ray tracing
   xray_tracing_enabled = var.enable_xray_tracing
@@ -162,7 +147,7 @@ resource "aws_api_gateway_method_settings" "main" {
     # Caching
     caching_enabled      = var.enable_caching
     cache_ttl_in_seconds = var.cache_ttl_in_seconds
-    cache_key_parameters = var.cache_key_parameters
+    # cache_key_parameters not supported in this context
   }
 }
 

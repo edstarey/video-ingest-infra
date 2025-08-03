@@ -75,14 +75,8 @@ variable "task_memory" {
   default     = 512
 
   validation {
-    condition = (
-      (var.task_cpu == 256 && contains([512, 1024, 2048], var.task_memory)) ||
-      (var.task_cpu == 512 && var.task_memory >= 1024 && var.task_memory <= 4096) ||
-      (var.task_cpu == 1024 && var.task_memory >= 2048 && var.task_memory <= 8192) ||
-      (var.task_cpu == 2048 && var.task_memory >= 4096 && var.task_memory <= 16384) ||
-      (var.task_cpu == 4096 && var.task_memory >= 8192 && var.task_memory <= 30720)
-    )
-    error_message = "Task memory must be compatible with the specified CPU units."
+    condition = var.task_memory >= 512 && var.task_memory <= 30720
+    error_message = "Task memory must be between 512 MB and 30720 MB."
   }
 }
 

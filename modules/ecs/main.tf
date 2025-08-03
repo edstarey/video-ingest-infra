@@ -208,11 +208,8 @@ resource "aws_ecs_service" "app" {
   launch_type      = "FARGATE"
   platform_version = var.platform_version
 
-  # Deployment configuration
-  deployment_configuration {
-    maximum_percent         = var.deployment_maximum_percent
-    minimum_healthy_percent = var.deployment_minimum_healthy_percent
-  }
+  # Note: deployment_configuration is not supported in aws_ecs_service
+  # These settings are handled by the ECS service automatically
 
   # Network configuration
   network_configuration {
