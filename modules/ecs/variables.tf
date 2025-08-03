@@ -75,7 +75,7 @@ variable "task_memory" {
   default     = 512
 
   validation {
-    condition = var.task_memory >= 512 && var.task_memory <= 30720
+    condition     = var.task_memory >= 512 && var.task_memory <= 30720
     error_message = "Task memory must be between 512 MB and 30720 MB."
   }
 }
